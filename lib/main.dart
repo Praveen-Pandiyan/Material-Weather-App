@@ -35,44 +35,42 @@ class _MyHomePageState extends State<MyHomePage> {
           elevation: 0.0,
           title: Text(widget.title),
         ),
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: false,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               snap: false,
               pinned: true,
               floating: true,
-              title: Text("heii"),
               flexibleSpace: FlexibleSpaceBar(
                   expandedTitleScale: 10.0,
-                  centerTitle: true,
-                  title: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Positioned(
-                      bottom: 100,
-                      child: const Text("34>",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ) //TextStyle
-                          ),
-                    ),
+                  centerTitle: false,
+                  title: Stack(
+                    children: const [
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: SizedBox(
+                          child: Text("22*",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10)),
+                        ),
+                      ),
+                    ],
                   ), //Text
 
                   background: Image.asset(
                     "asset/img/sunset.jpg",
                     fit: BoxFit.cover,
-                  ) //Images.network
-                  ), //FlexibleSpaceBar
+                  )),
               expandedHeight: MediaQuery.of(context).size.height - 200,
               elevation: 0.0,
-
               leading: IconButton(
                 icon: const Icon(Icons.menu),
                 tooltip: 'Menu',
                 onPressed: () {},
-              ), //IconButton
-            ), //SliverAppBar
+              ),
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => ListTile(
@@ -82,14 +80,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 50,
-                            color: Colors.greenAccent[400]) //TextStyle
-                        ), //Text
-                  ), //Center
-                ), //ListTile
+                            color: Colors.greenAccent[400])),
+                  ),
+                ),
                 childCount: 51,
-              ), //SliverChildBuildDelegate
-            ) //SliverList
-          ], //<Widget>[]
+              ),
+            )
+          ],
         ));
   }
 }
