@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -26,7 +27,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [ResizeableContainer()],
+          children: [
+            Text(
+              "Today",
+              style: TextStyle(fontSize: 30, fontWeight: ui.FontWeight.bold),
+            ),
+            ResizeableContainer()
+          ],
         ),
       ),
     );
@@ -82,16 +89,16 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
                 child: Container(
               color: Colors.black.withOpacity(.2),
             )),
-            Positioned.fill(
-              child: const Text(
-                "33°C",
-                style: TextStyle(
-                    // shadows: [ui.Shadow(color: Colors.white, blurRadius: 20.0)],
-                    fontSize: 100,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-            )
+            Positioned(
+                left: 10,
+                bottom: 20,
+                child: Text(
+                  "33°\u1d9c",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 60,
+                      fontWeight: FontWeight.bold),
+                ))
           ],
         ),
       ),
