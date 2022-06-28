@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:weather_app/providers/common_state.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -30,9 +31,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Text(
               "Today",
-              style: TextStyle(fontSize: 30, fontWeight: ui.FontWeight.bold),
+              style: Theme.of(context).textTheme.headline2,
             ),
-            ResizeableContainer()
+            const SizedBox(
+              height: 10.0,
+            ),
+            const ResizeableContainer()
           ],
         ),
       ),
@@ -70,8 +74,9 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width / 2.5,
-      constraints: BoxConstraints(maxWidth: 500.0, minWidth: 80),
-      margin: const EdgeInsets.all(8.0),
+      constraints: const BoxConstraints(
+          maxWidth: 400.0, minWidth: 80, minHeight: 50, maxHeight: 200),
+      margin: const EdgeInsets.all(4.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15.0),
         child: Stack(
@@ -91,17 +96,15 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
               color: Colors.black.withOpacity(.1),
             )),
             Positioned.fill(
-                left: 10,
-                bottom: 20,
                 child: FittedBox(
-                  child: Text(
-                    "33°\u1d9c",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 60,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ))
+              child: Text(
+                "39°",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+            ))
           ],
         ),
       ),
