@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -25,6 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,6 +70,7 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width / 2.5,
+      constraints: BoxConstraints(maxWidth: 500.0, minWidth: 80),
       margin: const EdgeInsets.all(8.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15.0),
@@ -78,7 +79,7 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
           children: [
             ImageFiltered(
               imageFilter: ui.ImageFilter.blur(
-                  sigmaX: 5, sigmaY: 5, tileMode: TileMode.mirror),
+                  sigmaX: 1, sigmaY: 1, tileMode: TileMode.mirror),
               child: Image.asset(
                 "asset/img/weather_img_sunset.jpg",
                 width: MediaQuery.of(context).size.width,
@@ -87,17 +88,19 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
             ),
             Positioned.fill(
                 child: Container(
-              color: Colors.black.withOpacity(.2),
+              color: Colors.black.withOpacity(.1),
             )),
-            Positioned(
+            Positioned.fill(
                 left: 10,
                 bottom: 20,
-                child: Text(
-                  "33°\u1d9c",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold),
+                child: FittedBox(
+                  child: Text(
+                    "33°\u1d9c",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 60,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ))
           ],
         ),
