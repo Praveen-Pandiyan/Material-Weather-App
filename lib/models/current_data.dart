@@ -52,31 +52,31 @@ class CurrentData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.coord != null) {
-      data['coord'] = this.coord!.toJson();
+    if (coord != null) {
+      data['coord'] = coord!.toJson();
     }
-    if (this.weather != null) {
-      data['weather'] = this.weather!.map((v) => v.toJson()).toList();
+    if (weather != null) {
+      data['weather'] = weather!.map((v) => v.toJson()).toList();
     }
-    data['base'] = this.base;
-    if (this.main != null) {
-      data['main'] = this.main!.toJson();
+    data['base'] = base;
+    if (main != null) {
+      data['main'] = main!.toJson();
     }
-    data['visibility'] = this.visibility;
-    if (this.wind != null) {
-      data['wind'] = this.wind!.toJson();
+    data['visibility'] = visibility;
+    if (wind != null) {
+      data['wind'] = wind!.toJson();
     }
-    if (this.clouds != null) {
-      data['clouds'] = this.clouds!.toJson();
+    if (clouds != null) {
+      data['clouds'] = clouds!.toJson();
     }
-    data['dt'] = this.dt;
-    if (this.sys != null) {
-      data['sys'] = this.sys!.toJson();
+    data['dt'] = dt;
+    if (sys != null) {
+      data['sys'] = sys!.toJson();
     }
-    data['timezone'] = this.timezone;
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['cod'] = this.cod;
+    data['timezone'] = timezone;
+    data['id'] = id;
+    data['name'] = name;
+    data['cod'] = cod;
     return data;
   }
 }
@@ -94,8 +94,8 @@ class Coord {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lon'] = this.lon;
-    data['lat'] = this.lat;
+    data['lon'] = lon;
+    data['lat'] = lat;
     return data;
   }
 }
@@ -117,10 +117,10 @@ class Weather {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['main'] = this.main;
-    data['description'] = this.description;
-    data['icon'] = this.icon;
+    data['id'] = id;
+    data['main'] = main;
+    data['description'] = description;
+    data['icon'] = icon;
     return data;
   }
 }
@@ -152,12 +152,12 @@ class Main {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['temp'] = this.temp;
-    data['feels_like'] = this.feelsLike;
-    data['temp_min'] = this.tempMin;
-    data['temp_max'] = this.tempMax;
-    data['pressure'] = this.pressure;
-    data['humidity'] = this.humidity;
+    data['temp'] = temp;
+    data['feels_like'] = feelsLike;
+    data['temp_min'] = tempMin;
+    data['temp_max'] = tempMax;
+    data['pressure'] = pressure;
+    data['humidity'] = humidity;
     return data;
   }
 }
@@ -175,8 +175,8 @@ class Wind {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['speed'] = this.speed;
-    data['deg'] = this.deg;
+    data['speed'] = speed;
+    data['deg'] = deg;
     return data;
   }
 }
@@ -192,7 +192,7 @@ class Clouds {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['all'] = this.all;
+    data['all'] = all;
     return data;
   }
 }
@@ -224,12 +224,12 @@ class Sys {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    data['id'] = this.id;
-    data['message'] = this.message;
-    data['country'] = this.country;
-    data['sunrise'] = this.sunrise;
-    data['sunset'] = this.sunset;
+    data['type'] = type;
+    data['id'] = id;
+    data['message'] = message;
+    data['country'] = country;
+    data['sunrise'] = sunrise;
+    data['sunset'] = sunset;
     return data;
   }
 }
