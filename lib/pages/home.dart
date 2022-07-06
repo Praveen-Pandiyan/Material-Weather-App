@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../components/resizeable_container.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+import '../components/sliding_drawer.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -12,6 +14,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool isDrawerOpen = false;
   @override
   void initState() {
     super.initState();
@@ -19,22 +22,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Today",
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            const ResizeableContainer(),
-            const TemperatureChart()
-          ],
+    return SlidingDrawer(
+      isOpen: isDrawerOpen,
+      onCloseDrawer: () => setState(() {
+        isDrawerOpen = false;
+      }),
+      drawer: Column(
+        children: List.generate(10, (index) => Text("$index")),
+      ),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    isDrawerOpen = !isDrawerOpen;
+                  });
+                },
+                child: Text(
+                  "Today",
+                  style: Theme.of(context).textTheme.headline2,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              const ResizeableContainer(),
+              const TemperatureChart()
+            ],
+          ),
         ),
       ),
     );
