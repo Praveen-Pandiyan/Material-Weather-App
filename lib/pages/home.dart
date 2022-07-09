@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../components/resizeable_container.dart';
 import 'package:fl_chart/fl_chart.dart';
 
+import '../components/secondary_weather_data.dart';
 import '../components/sliding_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -31,27 +32,31 @@ class _MyHomePageState extends State<MyHomePage> {
         children: List.generate(10, (index) => Text("$index")),
       ),
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isDrawerOpen = !isDrawerOpen;
-                  });
-                },
-                child: Text(
-                  "Today",
-                  style: Theme.of(context).textTheme.headline2,
+              SafeArea(
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      isDrawerOpen = !isDrawerOpen;
+                    });
+                  },
+                  child: Text(
+                    "Today",
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 10.0,
               ),
               const ResizeableContainer(),
-              const TemperatureChart()
+              const TemperatureChart(),
+              const SecondaryData()
             ],
           ),
         ),
@@ -73,7 +78,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          color: Colors.blue.shade600,
+          color: Colors.red.shade600,
         ),
         height: 100,
         width: MediaQuery.of(context).size.width,

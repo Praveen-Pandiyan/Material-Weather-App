@@ -62,10 +62,9 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
                 child: FittedBox(
               child: Text(
                 "39°",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2!
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white.withOpacity(.4)),
               ),
             ))
           ],

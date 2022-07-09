@@ -24,9 +24,9 @@ class _SlidingDrawerState extends State<SlidingDrawer>
     super.initState();
     setState(() {
       _controller = AnimationController(
-          vsync: this, duration: const Duration(seconds: 1));
+          vsync: this, duration: const Duration(milliseconds: 200));
     });
-    _controller.forward();
+    // _controller.forward();
   }
 
   @override
@@ -46,7 +46,7 @@ class _SlidingDrawerState extends State<SlidingDrawer>
       color: Colors.red,
       child: Stack(children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * .5,
+          width: MediaQuery.of(context).size.width * .55,
           child: widget.drawer,
         ),
         Positioned(
@@ -55,15 +55,30 @@ class _SlidingDrawerState extends State<SlidingDrawer>
           child: widget.child,
           builder: (context, child) => Transform.translate(
               offset: Offset(
-                  _controller.value * (MediaQuery.of(context).size.width * .5),
-                  _controller.value * (MediaQuery.of(context).size.width * .2)),
-              child: GestureDetector(
-                onTap: () {
-                  if (widget.isOpen) {
-                    widget.onCloseDrawer();
-                  }
-                },
-                child: child ?? Container(),
+                  _controller.value * (MediaQuery.of(context).size.width * .45),
+                  _controller.value *
+                      (MediaQuery.of(context).size.height * .02)),
+              child: Transform.scale(
+                scale: ((_controller.value * .2) - 1).abs(),
+                child: GestureDetector(
+                  onTap: () {
+                    if (widget.isOpen) {
+                      widget.onCloseDrawer();
+                    }
+                  },
+                  onHorizontalDragUpdate: (val) {
+                    // print("${val.globalPosition.dx} ${val.globalPosition.dy}");
+
+                    // if (val.localPosition.dx > 5.0)
+                    //   setState(() {
+                    //     widget.isOpen != widget.isOpen;
+                    //   });
+                  },
+                  child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(_controller.value * 15.0),
+                      child: child ?? Container()),
+                ),
               )),
         )),
       ]),
