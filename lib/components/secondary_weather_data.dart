@@ -23,34 +23,36 @@ class _SecondaryDataState extends State<SecondaryData> {
           borderRadius: BorderRadius.circular(15.0),
           boxShadow: [const BoxShadow(blurRadius: 2.0, color: Colors.grey)]),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(Icons.water_drop_rounded),
-              Text("Air Quality"),
-            ],
+          Text(
+            "Details",
+            style: Theme.of(context).textTheme.headline4,
           ),
           Table(
             children: [
               TableRow(children: [
                 _WeatherData(
-                  text: "humidity",
+                  title: "humidity",
                   icons: Icons.water_drop_outlined,
+                  value: "36",
                 ),
                 _WeatherData(
-                  text: "Pressure",
+                  title: "Pressure",
                   icons: Icons.water_drop_outlined,
+                  value: "36",
                 ),
               ]),
               TableRow(children: [
                 _WeatherData(
-                  text: "humidity",
+                  title: "humidity",
                   icons: Icons.water_drop_outlined,
+                  value: "36",
                 ),
                 _WeatherData(
-                  text: "humidity",
+                  title: "humidity",
                   icons: Icons.water_drop_outlined,
+                  value: "36",
                 ),
               ])
             ],
@@ -62,20 +64,33 @@ class _SecondaryDataState extends State<SecondaryData> {
 }
 
 class _WeatherData extends StatelessWidget {
-  final String text;
+  final String title, value;
   final IconData icons;
-  const _WeatherData({required this.icons, required this.text});
+  const _WeatherData(
+      {required this.icons, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(3.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon((icons)),
-          Text(
-            text,
-            style: const TextStyle(color: Colors.black),
+          Column(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 10.0),
+              ),
+              Text(
+                value,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ],
           ),
         ],
       ),

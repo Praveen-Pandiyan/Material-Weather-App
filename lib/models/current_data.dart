@@ -1,8 +1,8 @@
 class CurrentData {
-  double? lat;
-  double? lon;
+  num? lat;
+  num? lon;
   String? timezone;
-  int? timezoneOffset;
+  num? timezoneOffset;
   Current? current;
   List<Minutely>? minutely;
   List<Hourly>? hourly;
@@ -79,19 +79,19 @@ class CurrentData {
 }
 
 class Current {
-  int? dt;
-  int? sunrise;
-  int? sunset;
-  double? temp;
-  double? feelsLike;
-  int? pressure;
-  int? humidity;
-  double? dewPoint;
-  double? uvi;
-  int? clouds;
-  int? visibility;
-  int? windSpeed;
-  int? windDeg;
+  num? dt;
+  num? sunrise;
+  num? sunset;
+  num? temp;
+  num? feelsLike;
+  num? pressure;
+  num? humidity;
+  num? dewPoint;
+  num? uvi;
+  num? clouds;
+  num? visibility;
+  num? windSpeed;
+  num? windDeg;
   List<Weather>? weather;
   Rain? rain;
 
@@ -161,7 +161,7 @@ class Current {
 }
 
 class Weather {
-  int? id;
+  num? id;
   String? main;
   String? description;
   String? icon;
@@ -186,7 +186,7 @@ class Weather {
 }
 
 class Rain {
-  double? d1h;
+  num? d1h;
 
   Rain({this.d1h});
 
@@ -202,8 +202,8 @@ class Rain {
 }
 
 class Minutely {
-  int? dt;
-  double? precipitation;
+  num? dt;
+  num? precipitation;
 
   Minutely({this.dt, this.precipitation});
 
@@ -221,20 +221,20 @@ class Minutely {
 }
 
 class Hourly {
-  int? dt;
-  double? temp;
-  double? feelsLike;
-  int? pressure;
-  int? humidity;
-  double? dewPoint;
-  double? uvi;
-  int? clouds;
-  int? visibility;
-  double? windSpeed;
-  int? windDeg;
-  double? windGust;
+  num? dt;
+  num? temp;
+  num? feelsLike;
+  num? pressure;
+  num? humidity;
+  num? dewPoint;
+  num? uvi;
+  num? clouds;
+  num? visibility;
+  num? windSpeed;
+  num? windDeg;
+  num? windGust;
   List<Weather>? weather;
-  int? pop;
+  num? pop;
 
   Hourly(
       {this.dt,
@@ -297,24 +297,24 @@ class Hourly {
 }
 
 class Daily {
-  int? dt;
-  int? sunrise;
-  int? sunset;
-  int? moonrise;
-  int? moonset;
-  double? moonPhase;
+  num? dt;
+  num? sunrise;
+  num? sunset;
+  num? moonrise;
+  num? moonset;
+  num? moonPhase;
   Temp? temp;
   FeelsLike? feelsLike;
-  int? pressure;
-  int? humidity;
-  double? dewPoint;
-  double? windSpeed;
-  int? windDeg;
+  num? pressure;
+  num? humidity;
+  num? dewPoint;
+  num? windSpeed;
+  num? windDeg;
   List<Weather>? weather;
-  int? clouds;
-  double? pop;
-  double? rain;
-  double? uvi;
+  num? clouds;
+  num? pop;
+  num? rain;
+  num? uvi;
 
   Daily(
       {this.dt,
@@ -395,12 +395,12 @@ class Daily {
 }
 
 class Temp {
-  double? day;
-  double? min;
-  double? max;
-  double? night;
-  double? eve;
-  double? morn;
+  num? day;
+  num? min;
+  num? max;
+  num? night;
+  num? eve;
+  num? morn;
 
   Temp({this.day, this.min, this.max, this.night, this.eve, this.morn});
 
@@ -426,10 +426,10 @@ class Temp {
 }
 
 class FeelsLike {
-  double? day;
-  double? night;
-  double? eve;
-  double? morn;
+  num? day;
+  num? night;
+  num? eve;
+  num? morn;
 
   FeelsLike({this.day, this.night, this.eve, this.morn});
 
@@ -453,8 +453,8 @@ class FeelsLike {
 class Alerts {
   String? senderName;
   String? event;
-  int? start;
-  int? end;
+  num? start;
+  num? end;
   String? description;
   List<String>? tags;
 

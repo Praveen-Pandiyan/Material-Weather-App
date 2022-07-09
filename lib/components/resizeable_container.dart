@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import '../providers/common_state.dart';
+import '../helpers.dart';
 
 class ResizeableContainer extends StatefulWidget {
   const ResizeableContainer({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
             Positioned.fill(
                 child: FittedBox(
               child: Text(
-                "39°",
+                "${_commonState.currentData.current?.temp?.toTemp(Temp.f)}°",
                 style: Theme.of(context).textTheme.bodyText2!.copyWith(
                     fontWeight: FontWeight.w600,
                     color: Colors.white.withOpacity(.4)),
