@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/home.dart';
@@ -30,21 +29,20 @@ class MyApp extends StatelessWidget {
             // font
             fontFamily: 'Georgia',
             //text style
-            textTheme: TextTheme(
-              headline1: GoogleFonts.roboto(
-                  textStyle: const TextStyle(
-                      fontSize: 72.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
-              headline2: GoogleFonts.roboto(
-                  textStyle: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black)),
-              headline6:
-                  const TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-              bodyText2: GoogleFonts.getFont('Lexend Giga')
-                  .copyWith(color: Colors.white),
+            textTheme: const TextTheme(
+              headline1: TextStyle(
+                  fontSize: 72.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+              headline2: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.black),
+              headline4: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+              headline6: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
             ),
             backgroundColor: Colors.white),
         darkTheme: ThemeData.dark().copyWith(

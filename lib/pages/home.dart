@@ -7,6 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 
 import '../components/secondary_weather_data.dart';
 import '../components/sliding_drawer.dart';
+import 'dart:math';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -18,6 +19,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isDrawerOpen = false, isFirst = true;
+  Map<int, int> chartData = {};
   late CommonState _commonState;
   @override
   void initState() {
@@ -58,18 +60,24 @@ class _MyHomePageState extends State<MyHomePage> {
                             isDrawerOpen = !isDrawerOpen;
                           });
                         },
-                        child: Text(
-                          "Today",
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
+                        child: Icon(Icons.menu),
                       ),
                     ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     const ResizeableContainer(),
+                    SizedBox(
+                      height: 10,
+                    ),
                     const SecondaryData(),
-                    const TemperatureChart(),
+                    if (_commonState.currentData.hourly?.first.temp != null)
+                      TemperatureChart(
+                        chartData: _commonState.currentData.daily
+                                ?.map((e) => e.temp?.day ?? 0)
+                                .toList() ??
+                            [],
+                      ),
                   ],
                 ),
               ),
@@ -80,7 +88,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class TemperatureChart extends StatefulWidget {
-  const TemperatureChart({Key? key}) : super(key: key);
+  final List<num> chartData;
+
+  const TemperatureChart({Key? key, required this.chartData}) : super(key: key);
 
   @override
   State<TemperatureChart> createState() => _TemperatureChartState();
@@ -94,7 +104,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15.0),
             color: Colors.white,
-            boxShadow: [BoxShadow(blurRadius: 2.0)]),
+            boxShadow: [BoxShadow(blurRadius: 1.0)]),
         width: MediaQuery.of(context).size.width,
         child: DefaultTextStyle(
           style: TextStyle(color: Colors.black, fontSize: 6.0),
@@ -102,7 +112,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Temperature",
+                "Temperature Trend",
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -113,7 +123,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 child: LineChart(
                   LineChartData(
                     lineTouchData: LineTouchData(
-                      enabled: true,
+                      enabled: false,
                     ),
                     gridData: FlGridData(show: false),
                     borderData: FlBorderData(
@@ -130,34 +140,29 @@ class _TemperatureChartState extends State<TemperatureChart> {
                       LineChartBarData(
                         isCurved: true,
                         curveSmoothness: .5,
-                        gradient:
-                            LinearGradient(colors: [Colors.red, Colors.orange]),
+                        gradient: LinearGradient(
+                            colors: [Colors.red, Colors.orange],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter),
                         barWidth: 2,
                         isStrokeCapRound: true,
                         dotData: FlDotData(show: false),
                         belowBarData: BarAreaData(show: false),
-                        spots: const [
-                          FlSpot(1, 1),
-                          FlSpot(3, 4),
-                          FlSpot(5, 1.8),
-                          FlSpot(7, 5),
-                          FlSpot(10, 2),
-                          FlSpot(12, 2.2),
-                          FlSpot(13, 1.8),
+                        spots: [
+                          ...widget.chartData.asMap().entries.map((e) =>
+                              FlSpot(e.key.toDouble(), e.value.toDouble()))
                         ],
                       ),
                     ],
-                    minX: 0,
-                    maxX: 14,
-                    maxY: 6,
-                    minY: 0,
+                    maxY: widget.chartData.reduce(max).toDouble() + 2,
+                    minY: widget.chartData.reduce(min).toDouble() - 2,
                     titlesData: FlTitlesData(
                       show: true,
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 3,
-                          reservedSize: 10,
+                          interval: 1,
+                          reservedSize: 15,
                         ),
                       ),
                       rightTitles: AxisTitles(

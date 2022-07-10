@@ -35,24 +35,28 @@ class _SecondaryDataState extends State<SecondaryData> {
                 _WeatherData(
                   title: "humidity",
                   icons: Icons.water_drop_outlined,
-                  value: "36",
+                  iconColor: Colors.blueAccent,
+                  value: _commonState.currentData.current!.humidity.toString(),
                 ),
                 _WeatherData(
                   title: "Pressure",
-                  icons: Icons.water_drop_outlined,
-                  value: "36",
+                  icons: Icons.speed,
+                  iconColor: Colors.redAccent,
+                  value: _commonState.currentData.current!.pressure.toString(),
                 ),
               ]),
               TableRow(children: [
                 _WeatherData(
-                  title: "humidity",
-                  icons: Icons.water_drop_outlined,
-                  value: "36",
+                  title: "Wind",
+                  icons: Icons.wind_power,
+                  iconColor: Colors.lightGreen,
+                  value: _commonState.currentData.current!.windSpeed.toString(),
                 ),
                 _WeatherData(
-                  title: "humidity",
-                  icons: Icons.water_drop_outlined,
-                  value: "36",
+                  title: "UV index",
+                  icons: Icons.sunny,
+                  iconColor: Colors.orange,
+                  value: _commonState.currentData.current!.uvi.toString(),
                 ),
               ])
             ],
@@ -66,17 +70,25 @@ class _SecondaryDataState extends State<SecondaryData> {
 class _WeatherData extends StatelessWidget {
   final String title, value;
   final IconData icons;
+  final Color iconColor;
   const _WeatherData(
-      {required this.icons, required this.title, required this.value});
+      {required this.icons,
+      required this.title,
+      required this.value,
+      this.iconColor = Colors.black});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 0.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon((icons)),
+          Icon(
+            (icons),
+            color: iconColor,
+          ),
           Column(
             children: [
               Text(
@@ -84,7 +96,7 @@ class _WeatherData extends StatelessWidget {
                 style: const TextStyle(
                     color: Colors.black38,
                     fontWeight: FontWeight.w400,
-                    fontSize: 10.0),
+                    fontSize: 12.0),
               ),
               Text(
                 value,
