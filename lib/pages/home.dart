@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Column(
         children: List.generate(10, (index) => Text("$index")),
       ),
+      // to-do , show error msg from api
       child: !isFirst
           ? Scaffold(
               backgroundColor: Theme.of(context).backgroundColor,
@@ -67,14 +68,32 @@ class _MyHomePageState extends State<MyHomePage> {
                       height: 10.0,
                     ),
                     const ResizeableContainer(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     const SecondaryData(),
-                    if (_commonState.currentData.hourly?.first.temp != null)
+                    Text(
+                      "In Next 1 Hour",
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    if (_commonState.currentData.minutely?.first != null)
                       TemperatureChart(
-                        chartData: _commonState.currentData.daily
-                                ?.map((e) => e.temp?.day ?? 0)
+                        chartData: _commonState.currentData.minutely
+                                ?.map((e) => e.precipitation ?? 0)
+                                .toList() ??
+                            [],
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "In Next 48 Hours",
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    if (_commonState.currentData.hourly?.first != null)
+                      TemperatureChart(
+                        chartData: _commonState.currentData.hourly
+                                ?.map((e) => e.temp ?? 0)
                                 .toList() ??
                             [],
                       ),
@@ -139,7 +158,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                     lineBarsData: [
                       LineChartBarData(
                         isCurved: true,
-                        curveSmoothness: .5,
+                        curveSmoothness: .01,
                         gradient: LinearGradient(
                             colors: [Colors.red, Colors.orange],
                             begin: Alignment.topCenter,
