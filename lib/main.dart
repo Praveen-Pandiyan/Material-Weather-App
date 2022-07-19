@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'components/sliding_drawer.dart';
 import 'pages/home.dart';
+import 'pages/search.dart';
 import 'providers/common_state.dart';
 
 void main() {
@@ -49,8 +51,51 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.black,
         ),
         themeMode: ThemeMode.light,
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MainRouter(),
       ),
+    );
+  }
+}
+
+class MainRouter extends StatefulWidget {
+  const MainRouter({Key? key}) : super(key: key);
+
+  @override
+  State<MainRouter> createState() => _MainRouterState();
+}
+
+class _MainRouterState extends State<MainRouter> {
+  bool isFirst = true;
+  CurrentPage _currentPage = CurrentPage.search;
+  late CommonState commonState;
+  @override
+  Widget build(BuildContext context) {
+    commonState = Provider.of<CommonState>(context);
+    return SlidingDrawer(
+      isOpen: commonState.isDrawerOpen,
+      onCloseDrawer: () => setState(() {
+        commonState.isDrawerOpen = false;
+      }),
+      drawer: Column(
+        children: List.generate(
+            10,
+            (index) => InkWell(
+                onTap: () {
+                  setState(() {
+                    _currentPage = CurrentPage.search;
+                  });
+                },
+                child: Text("$index"))),
+      ),
+      child: () {
+        switch (_currentPage) {
+          case CurrentPage.home:
+            return const MyHomePage();
+          case CurrentPage.search:
+            return const SearchPage();
+          default:
+        }
+      }() as Widget,
     );
   }
 }
