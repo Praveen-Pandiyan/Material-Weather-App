@@ -14,33 +14,58 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late CommonState commonState;
   SearchResluts? searchResluts;
+  TextEditingController _controller = TextEditingController();
+  bool treshold = false;
+  int doCallIn = 0;
+  _doSearch(String q) async {
+    var temp = await commonState.locationSearch(q);
+    setState(() {
+      searchResluts = temp;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    commonState = Provider.of<CommonState>(context);
+    CommonState commonState = Provider.of<CommonState>(context);
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back)),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      commonState.currentPage = CurrentPage.home;
+                    });
+                  },
+                  icon: const Icon(Icons.arrow_back)),
               Expanded(
                   child: TextField(
-                decoration: InputDecoration.collapsed(hintText: "cdc"),
-                onChanged: (String val) {
-                  Future.delayed(const Duration(seconds: 1))
-                      .then((value) async {
-                    var temp = await commonState.locationSearch(val);
-                    setState(() {
-                      searchResluts = temp;
-                    });
-                  });
+                controller: _controller,
+                decoration: const InputDecoration.collapsed(hintText: "cdc"),
+                onChanged: (String val) {},
+                autocorrect: true,
+                onEditingComplete: () {
+                  _doSearch(_controller.text);
                 },
               )),
-              IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+              IconButton(
+                  onPressed: () {
+                    _doSearch(_controller.text);
+                  },
+                  icon: const Icon(Icons.search)),
             ],
           ),
           if (searchResluts != null && searchResluts!.features != null)
-            ...searchResluts!.features!.map((e) => Text(e.text ?? "")).toList()
+            ...searchResluts!.features!
+                .map((e) => InkWell(
+                    onTap: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30, top: 20),
+                      child: Text(e.text ?? ""),
+                    )))
+                .toList()
         ],
       ),
     );

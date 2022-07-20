@@ -11,7 +11,7 @@ class SecondaryData extends StatefulWidget {
 }
 
 class _SecondaryDataState extends State<SecondaryData> {
-  late CommonState _commonState;
+  CommonState? _commonState;
   @override
   Widget build(BuildContext context) {
     CommonState _commonState = Provider.of<CommonState>(context);
@@ -21,7 +21,7 @@ class _SecondaryDataState extends State<SecondaryData> {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.0),
-          boxShadow: [const BoxShadow(blurRadius: 2.0, color: Colors.grey)]),
+          boxShadow: const [BoxShadow(blurRadius: 2.0, color: Colors.grey)]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -17,7 +17,7 @@ class ResizeableContainer extends StatefulWidget {
 
 class _ResizeableContainerState extends State<ResizeableContainer> {
   late CommonState _commonState;
-  Float64List matrix4 = new Matrix4.identity().storage;
+  Float64List matrix4 = Matrix4.identity().storage;
   late Future<ui.Image> imgFuture =
       loadImageFromFile("asset/img/weather_img_sunset.jpg");
 

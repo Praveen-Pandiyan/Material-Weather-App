@@ -12,14 +12,15 @@ import 'dart:math';
 import '../models/current_data.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final Function(bool)? triggerDrawer;
+  const MyHomePage({Key? key, this.triggerDrawer}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isDrawerOpen = false, isFirst = true;
+  bool isFirst = true;
   Map<int, int> chartData = {};
   late CommonState commonState;
   @override
@@ -52,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         setState(() {
                           commonState.isDrawerOpen = true;
                         });
+                        widget.triggerDrawer!(true);
                         print("click  ${commonState.isDrawerOpen}");
                       },
                       child: Icon(Icons.menu),

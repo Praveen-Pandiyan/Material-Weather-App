@@ -16,13 +16,20 @@ enum CurrentPage { home, search, settings }
 class CommonState extends ChangeNotifier {
   CurrentData _currentData = CurrentData();
   bool isDrawerOpen = false;
+  CurrentPage _currentPage = CurrentPage.home;
 
   set currentData(CurrentData val) {
     _currentData = val;
+    notifyListeners();
+  }
+
+  set currentPage(CurrentPage val) {
+    _currentPage = val;
+    notifyListeners();
   }
 
   CurrentData get currentData => _currentData;
-
+  CurrentPage get currentPage => _currentPage;
   Future<bool> getWeatherData() async {
     final response = await http.get(Uri.parse(
         "https://api.openweathermap.org/data/2.5/onecall?lat=10.8029&lon=78.6988&appid=$openWeatherMapey&units=metric"));

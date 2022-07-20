@@ -66,15 +66,15 @@ class MainRouter extends StatefulWidget {
 
 class _MainRouterState extends State<MainRouter> {
   bool isFirst = true;
-  CurrentPage _currentPage = CurrentPage.search;
-  late CommonState commonState;
+  CommonState? commonState;
+  bool drawerOpen = false;
   @override
   Widget build(BuildContext context) {
-    commonState = Provider.of<CommonState>(context);
+    CommonState commonState = Provider.of<CommonState>(context);
     return SlidingDrawer(
-      isOpen: commonState.isDrawerOpen,
+      isOpen: drawerOpen,
       onCloseDrawer: () => setState(() {
-        commonState.isDrawerOpen = false;
+        drawerOpen = false;
       }),
       drawer: Column(
         children: List.generate(
@@ -82,20 +82,27 @@ class _MainRouterState extends State<MainRouter> {
             (index) => InkWell(
                 onTap: () {
                   setState(() {
-                    _currentPage = CurrentPage.search;
+                    commonState.currentPage = CurrentPage.search;
                   });
                 },
                 child: Text("$index"))),
       ),
       child: () {
-        switch (_currentPage) {
+        switch (commonState.currentPage) {
           case CurrentPage.home:
-            return const MyHomePage();
+            return MyHomePage(
+              triggerDrawer: (val) {
+                setState(() {
+                  drawerOpen = val;
+                });
+              },
+            );
           case CurrentPage.search:
-            return const SearchPage();
+            return SearchPage();
           default:
+            return const MyHomePage();
         }
-      }() as Widget,
+      }(),
     );
   }
 }
