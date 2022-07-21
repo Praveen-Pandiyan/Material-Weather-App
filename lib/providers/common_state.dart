@@ -15,8 +15,9 @@ enum CurrentPage { home, search, settings }
 
 class CommonState extends ChangeNotifier {
   CurrentData _currentData = CurrentData();
-  bool isDrawerOpen = false;
+  bool _isDrawerOpen = false;
   CurrentPage _currentPage = CurrentPage.home;
+  Location _selectedLoc = Location();
 
   set currentData(CurrentData val) {
     _currentData = val;
@@ -28,18 +29,32 @@ class CommonState extends ChangeNotifier {
     notifyListeners();
   }
 
+  set isDrawerOpen(bool val) {
+    _isDrawerOpen = val;
+    notifyListeners();
+  }
+
+  set selectedLoc(Location val) {
+    _selectedLoc = val;
+    notifyListeners();
+  }
+
   CurrentData get currentData => _currentData;
   CurrentPage get currentPage => _currentPage;
-  Future<bool> getWeatherData() async {
+  bool get isDrawerOpen => _isDrawerOpen;
+  Location get selectedLoc => _selectedLoc;
+
+  Future<String> getWeatherData() async {
+    if (selectedLoc.lon == null) return "please select a location";
     final response = await http.get(Uri.parse(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=10.8029&lon=78.6988&appid=$openWeatherMapey&units=metric"));
+        "https://api.openweathermap.org/data/2.5/onecall?lat=${selectedLoc.lat}&lon=${selectedLoc.lon}&appid=$openWeatherMapey&units=metric"));
     if (response.statusCode == 200) {
       currentData = CurrentData.fromJson(json.decode(response.body));
-      return true;
+      return "s";
       // print(json.decode(response.body));
     } else {
       print(response.body);
-      return false;
+      return "f";
     }
   }
 

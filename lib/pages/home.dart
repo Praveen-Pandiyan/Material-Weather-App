@@ -6,9 +6,6 @@ import '../components/resizeable_container.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../components/secondary_weather_data.dart';
-import '../components/sliding_drawer.dart';
-import 'dart:math';
-
 import '../models/current_data.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -32,11 +29,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     CommonState commonState = Provider.of<CommonState>(context);
     if (commonState != null && isFirst) {
-      commonState.getWeatherData().then((value) {
-        setState(() {
-          isFirst = false;
-        });
-      });
+      isFirst = false;
+      commonState.getWeatherData().then((value) {});
     }
 
     return !isFirst

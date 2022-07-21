@@ -1,8 +1,8 @@
-class UserLocation {
+class Location {
   num? lat;
   num? lon;
-  String? name;
-  UserLocation({this.lat, this.lon, this.name});
+  String? name, secondaryName;
+  Location({this.lat, this.lon, this.name, this.secondaryName});
 }
 
 class SearchResluts {
