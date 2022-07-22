@@ -48,8 +48,16 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
             style: Theme.of(context).textTheme.headline1,
           ),
           Text(
-            _commonState.currentData.timezone.toString(),
+            '${_commonState.currentData.current?.weather![0].description}',
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
+          Text(
+            _commonState.selectedLoc.name.toString(),
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          Text(
+            _commonState.selectedLoc.secondaryName.toString(),
+            style: Theme.of(context).textTheme.bodySmall,
           )
         ],
       ),

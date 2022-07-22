@@ -37,26 +37,35 @@ class _MyHomePageState extends State<MyHomePage> {
         ? Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
             body: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SafeArea(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          commonState.isDrawerOpen = true;
-                        });
-                        widget.triggerDrawer!(true);
-                        print("click  ${commonState.isDrawerOpen}");
-                      },
-                      child: Icon(Icons.menu),
+                  MediaQuery.removePadding(
+                    context: context,
+                    child: Container(
+                      color: Colors.blueAccent,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SafeArea(
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  commonState.isDrawerOpen = true;
+                                });
+                                widget.triggerDrawer!(true);
+                              },
+                              icon: const Icon(Icons.menu),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          const ResizeableContainer(),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  const ResizeableContainer(),
                   const SizedBox(
                     height: 10,
                   ),

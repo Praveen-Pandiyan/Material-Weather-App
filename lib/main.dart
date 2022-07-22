@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/models/current_data.dart';
 
 import 'components/sliding_drawer.dart';
 import 'pages/home.dart';
@@ -57,6 +58,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class DrawerItem {
+  String title;
+  CurrentPage page;
+  IconData icons;
+  DrawerItem({required this.title, required this.page, required this.icons});
+}
+
 class MainRouter extends StatefulWidget {
   const MainRouter({Key? key}) : super(key: key);
 
@@ -68,6 +76,10 @@ class _MainRouterState extends State<MainRouter> {
   bool isFirst = true;
   CommonState? commonState;
   bool drawerOpen = false;
+  List<DrawerItem> drawerList = [
+    DrawerItem(title: "Home", icons: Icons.home, page: CurrentPage.home),
+    DrawerItem(title: "Search", icons: Icons.search, page: CurrentPage.search)
+  ];
   @override
   Widget build(BuildContext context) {
     CommonState commonState = Provider.of<CommonState>(context);
@@ -77,15 +89,28 @@ class _MainRouterState extends State<MainRouter> {
         drawerOpen = false;
       }),
       drawer: Column(
-        children: List.generate(
-            10,
-            (index) => InkWell(
-                onTap: () {
-                  setState(() {
-                    commonState.currentPage = CurrentPage.search;
-                  });
-                },
-                child: Text("$index"))),
+        children: drawerList
+            .map((e) => InkWell(
+                  onTap: () {
+                    commonState.currentPage = e.page;
+                    setState(() {
+                      drawerOpen = false;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Icon(e.icons),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        e.title,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ))
+            .toList(),
       ),
       child: () {
         switch (commonState.currentPage) {
