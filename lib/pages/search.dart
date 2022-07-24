@@ -34,6 +34,9 @@ class _SearchPageState extends State<SearchPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 20.0,
+          ),
           Row(
             children: [
               IconButton(
@@ -48,6 +51,9 @@ class _SearchPageState extends State<SearchPage> {
                 controller: _controller,
                 decoration: const InputDecoration.collapsed(hintText: "Search"),
                 onChanged: (String val) {
+                  setState(() {
+                    searchResluts = null;
+                  });
                   if (treshold != null) treshold!.cancel();
                   treshold = Timer(
                       const Duration(milliseconds: 500), () => _doSearch(val));
@@ -64,25 +70,38 @@ class _SearchPageState extends State<SearchPage> {
                   icon: const Icon(Icons.search)),
             ],
           ),
-          if (searchResluts != null && searchResluts!.features != null)
-            ...searchResluts!.features!
-                .map((e) => InkWell(
-                    onTap: () {
-                      setState(() {
-                        commonState.selectedLoc = Location(
-                          lat: e.center![1],
-                          lon: e.center![0],
-                          name: e.context!.first.text,
-                          secondaryName: e.context![1].text,
-                        );
-                        commonState.currentPage = CurrentPage.home;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30, top: 20),
-                      child: Text(e.text ?? ""),
-                    )))
-                .toList()
+          () {
+            if (_controller.text.isEmpty) {
+              return const Text("Please Type to Search");
+            }
+
+            if (searchResluts != null &&
+                searchResluts!.query != null &&
+                searchResluts!.features!.isNotEmpty) {
+              return Column(
+                children: searchResluts!.features!
+                    .map((e) => InkWell(
+                        onTap: () {
+                          setState(() {
+                            commonState.selectedLoc = Location(
+                              lat: e.center![1],
+                              lon: e.center![0],
+                              name: e.context!.first.text,
+                              secondaryName: e.context![1].text,
+                            );
+                            commonState.currentPage = CurrentPage.home;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30, top: 20),
+                          child: Text(e.text ?? ""),
+                        )))
+                    .toList(),
+              );
+            } else {
+              return const Text("No resluts found");
+            }
+          }()
         ],
       ),
     );

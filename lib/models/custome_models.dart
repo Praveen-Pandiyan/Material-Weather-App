@@ -18,7 +18,7 @@ class SearchResluts {
   SearchResluts.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     query = json['query'].cast<String>();
-    if (json['features'] != null) {
+    if (json['features'] != null && json['features'] != []) {
       features = <Features>[];
       json['features'].forEach((v) {
         features!.add(Features.fromJson(v));
@@ -73,7 +73,7 @@ class Features {
   Features.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
-    placeType = json['place_type'].cast<String>();
+    placeType = json['place_type']!.cast<String>();
     relevance = json['relevance'];
     properties = json['properties'] != null
         ? Properties.fromJson(json['properties'])
@@ -82,13 +82,13 @@ class Features {
     placeName = json['place_name'];
     matchingText = json['matching_text'];
     matchingPlaceName = json['matching_place_name'];
-    bbox = json['bbox'].cast<double>();
-    center = json['center'].cast<double>();
+    bbox = json['bbox']!.cast<double>();
+    center = json['center']!.cast<double>();
     geometry =
         json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
     if (json['context'] != null) {
       context = <Context>[];
-      json['context'].forEach((v) {
+      json['context']!.forEach((v) {
         context!.add(Context.fromJson(v));
       });
     }
