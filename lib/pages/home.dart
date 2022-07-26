@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/models/custome_models.dart';
 import 'package:weather_app/providers/common_state.dart';
 
 import '../components/resizeable_container.dart';
@@ -19,6 +23,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool isFirst = true;
   Map<int, int> chartData = {};
+  final LocalStorage storage = LocalStorage('search');
   late CommonState commonState;
   @override
   void initState() {
@@ -27,10 +32,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    CommonState commonState = Provider.of<CommonState>(context);
-    if (commonState != null && isFirst) {
-      isFirst = false;
-      commonState.getWeatherData().then((value) {});
+    commonState = Provider.of<CommonState>(context);
+    if (isFirst) {
+      if (commonState.selectedLoc.name == null) {
+        storage.ready.then((value) {
+          if (value) {
+            var temp = storage.getItem("lastSearch");
+            print(temp.toString() + "fff");
+            if (temp == null) {
+              commonState.selectedLoc = Location(
+                  lat: 29.949932,
+                  lon: -90.070116,
+                  name: "Orleans Parish",
+                  secondaryName: "");
+            } else {
+              commonState.selectedLoc = Location.fromJson(jsonDecode(temp));
+            }
+          }
+        });
+      }
+      if (commonState.selectedLoc.name != null) {
+        commonState.getWeatherData().then((value) {});
+        isFirst = false;
+      }
     }
 
     return !isFirst

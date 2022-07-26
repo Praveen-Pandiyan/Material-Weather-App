@@ -1,8 +1,26 @@
 class Location {
   num? lat;
   num? lon;
-  String? name, secondaryName;
+  String? name;
+  String? secondaryName;
+
   Location({this.lat, this.lon, this.name, this.secondaryName});
+
+  Location.fromJson(Map<String, dynamic> json) {
+    lat = json['lat'];
+    lon = json['lon'];
+    name = json['name'];
+    secondaryName = json['secondaryName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['lat'] = this.lat;
+    data['lon'] = this.lon;
+    data['name'] = this.name;
+    data['secondaryName'] = this.secondaryName;
+    return data;
+  }
 }
 
 class SearchResluts {

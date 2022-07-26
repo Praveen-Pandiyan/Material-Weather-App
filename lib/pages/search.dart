@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/providers/common_state.dart';
 
@@ -19,7 +21,7 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _controller = TextEditingController();
   Timer? treshold;
   int doCallIn = 0;
-
+  final LocalStorage storage = LocalStorage('search');
   @override
   Widget build(BuildContext context) {
     CommonState commonState = Provider.of<CommonState>(context);
@@ -81,15 +83,28 @@ class _SearchPageState extends State<SearchPage> {
               return Column(
                 children: searchResluts!.features!
                     .map((e) => InkWell(
-                        onTap: () {
-                          setState(() {
-                            commonState.selectedLoc = Location(
-                              lat: e.center![1],
-                              lon: e.center![0],
-                              name: e.context!.first.text,
-                              secondaryName: e.context![1].text,
-                            );
-                            commonState.currentPage = CurrentPage.home;
+                        onTap: () async {
+                          await storage.ready.then((value) {
+                            if (value) {
+                              storage.setItem(
+                                  "lastSearch",
+                                  json.encode(Location(
+                                    lat: e.center![1],
+                                    lon: e.center![0],
+                                    name: e.text,
+                                    secondaryName: e.context![1].text,
+                                  ).toJson()));
+                              print(storage.getItem("lastSearch"));
+                              setState(() {
+                                commonState.selectedLoc = Location(
+                                  lat: e.center![1],
+                                  lon: e.center![0],
+                                  name: e.context!.first.text,
+                                  secondaryName: e.context![1].text,
+                                );
+                                commonState.currentPage = CurrentPage.home;
+                              });
+                            }
                           });
                         },
                         child: Padding(

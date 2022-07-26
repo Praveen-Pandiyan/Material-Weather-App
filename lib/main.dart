@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/models/current_data.dart';
 
 import 'components/sliding_drawer.dart';
+import 'models/custome_models.dart';
 import 'pages/home.dart';
 import 'pages/search.dart';
 import 'providers/common_state.dart';
@@ -73,61 +77,99 @@ class MainRouter extends StatefulWidget {
 }
 
 class _MainRouterState extends State<MainRouter> {
+  final LocalStorage storage = LocalStorage('search');
   bool isFirst = true;
-  CommonState? commonState;
+  late CommonState commonState;
   bool drawerOpen = false;
   List<DrawerItem> drawerList = [
     DrawerItem(title: "Home", icons: Icons.home, page: CurrentPage.home),
     DrawerItem(title: "Search", icons: Icons.search, page: CurrentPage.search)
   ];
+  late final Future? myFuture;
+  Future<bool?> checkCatch() async {
+    return storage.ready.then((value) {
+      if (value) {
+        var temp = storage.getItem("lastSearch");
+        print(temp.toString() + "fff");
+        if (temp == null) {
+          commonState.selectedLoc = Location(
+              lat: 29.949932,
+              lon: -90.070116,
+              name: "Orleans Parish",
+              secondaryName: "");
+        } else {
+          commonState.selectedLoc = Location.fromJson(temp);
+        }
+
+        return true;
+      } else
+        return false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    myFuture = checkCatch();
+  }
+
   @override
   Widget build(BuildContext context) {
-    CommonState commonState = Provider.of<CommonState>(context);
-    return SlidingDrawer(
-      isOpen: drawerOpen,
-      onCloseDrawer: () => setState(() {
-        drawerOpen = false;
-      }),
-      drawer: Column(
-        children: drawerList
-            .map((e) => InkWell(
-                  onTap: () {
-                    commonState.currentPage = e.page;
-                    setState(() {
-                      drawerOpen = false;
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      Icon(e.icons),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        e.title,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                ))
-            .toList(),
-      ),
-      child: () {
-        switch (commonState.currentPage) {
-          case CurrentPage.home:
-            return MyHomePage(
-              triggerDrawer: (val) {
-                setState(() {
-                  drawerOpen = val;
-                });
-              },
-            );
-          case CurrentPage.search:
-            return SearchPage();
-          default:
-            return const MyHomePage();
-        }
-      }(),
-    );
+    commonState = Provider.of<CommonState>(context);
+
+    return FutureBuilder(
+        future: myFuture,
+        builder: (context, snapshot) {
+          if (snapshot == null || snapshot.data == false) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return SlidingDrawer(
+            isOpen: drawerOpen,
+            onCloseDrawer: () => setState(() {
+              drawerOpen = false;
+            }),
+            drawer: Column(
+              children: drawerList
+                  .map((e) => InkWell(
+                        onTap: () {
+                          commonState.currentPage = e.page;
+                          setState(() {
+                            drawerOpen = false;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Icon(e.icons),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              e.title,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ))
+                  .toList(),
+            ),
+            child: () {
+              switch (commonState.currentPage) {
+                case CurrentPage.home:
+                  return MyHomePage(
+                    triggerDrawer: (val) {
+                      setState(() {
+                        drawerOpen = val;
+                      });
+                    },
+                  );
+                case CurrentPage.search:
+                  return SearchPage();
+                default:
+                  return const MyHomePage();
+              }
+            }(),
+          );
+        });
   }
 }
