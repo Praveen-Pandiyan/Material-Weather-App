@@ -41,10 +41,10 @@ class _MyHomePageState extends State<MyHomePage> {
             print(temp.toString() + "fff");
             if (temp == null) {
               commonState.selectedLoc = Location(
-                  lat: 29.949932,
-                  lon: -90.070116,
-                  name: "Orleans Parish",
-                  secondaryName: "");
+                  lat: 28.613895,
+                  lon: 77.209006,
+                  name: "New Delhi",
+                  secondaryName: "Delhi");
             } else {
               commonState.selectedLoc = Location.fromJson(jsonDecode(temp));
             }
@@ -72,14 +72,28 @@ class _MyHomePageState extends State<MyHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SafeArea(
-                            child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  commonState.isDrawerOpen = true;
-                                });
-                                widget.triggerDrawer!(true);
-                              },
-                              icon: const Icon(Icons.menu),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      commonState.isDrawerOpen = true;
+                                    });
+                                    widget.triggerDrawer!(true);
+                                  },
+                                  icon: const Icon(Icons.menu),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      commonState.currentPage =
+                                          CurrentPage.search;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.search),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(
@@ -110,12 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   if (commonState.currentData.daily?.first != null)
                     TonggleChart(
-                      title: "Next",
+                      title: "Next 48 hours",
                       hourly: commonState.currentData.hourly,
                     ),
                   if (commonState.currentData.daily?.first != null)
                     TonggleChart(
-                      title: "Next",
+                      title: "Next 4 days",
                       daily: commonState.currentData.daily,
                     ),
                 ],
@@ -144,7 +158,7 @@ class TonggleChart extends StatefulWidget {
 class _TonggleChartState extends State<TonggleChart> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         widget.title,
         style: Theme.of(context).textTheme.headline4,

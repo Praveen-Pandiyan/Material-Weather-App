@@ -99,7 +99,7 @@ class _SearchPageState extends State<SearchPage> {
                                 commonState.selectedLoc = Location(
                                   lat: e.center![1],
                                   lon: e.center![0],
-                                  name: e.context!.first.text,
+                                  name: e.text,
                                   secondaryName: e.context![1].text,
                                 );
                                 commonState.currentPage = CurrentPage.home;

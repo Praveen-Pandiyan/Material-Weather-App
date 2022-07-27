@@ -91,29 +91,24 @@ class Features {
   Features.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     type = json['type'];
-    placeType = json['place_type']!.cast<String>();
+    placeType = json['place_type']?.cast<String>();
     relevance = json['relevance'];
-    properties = json['properties'] != null
-        ? Properties.fromJson(json['properties'])
-        : null;
     text = json['text'];
     placeName = json['place_name'];
     matchingText = json['matching_text'];
     matchingPlaceName = json['matching_place_name'];
-    bbox = json['bbox']!.cast<double>();
-    center = json['center']!.cast<double>();
-    geometry =
-        json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
+    center = json['center']?.cast<double>();
+
     if (json['context'] != null) {
       context = <Context>[];
-      json['context']!.forEach((v) {
+      json['context']?.forEach((v) {
         context!.add(Context.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['type'] = type;
     data['place_type'] = placeType;
