@@ -10,9 +10,15 @@ import 'models/custome_models.dart';
 import 'pages/home.dart';
 import 'pages/search.dart';
 import 'providers/common_state.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  // locks iin potrate mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -82,8 +88,13 @@ class _MainRouterState extends State<MainRouter> {
   late CommonState commonState;
   bool drawerOpen = false;
   List<DrawerItem> drawerList = [
-    DrawerItem(title: "Home", icons: Icons.home, page: CurrentPage.home),
-    DrawerItem(title: "Search", icons: Icons.search, page: CurrentPage.search)
+    DrawerItem(
+        title: "Home", icons: Icons.home_rounded, page: CurrentPage.home),
+    DrawerItem(title: "Search", icons: Icons.search, page: CurrentPage.search),
+    DrawerItem(
+        title: "About",
+        icons: Icons.info_outline_rounded,
+        page: CurrentPage.about)
   ];
   late final Future? myFuture;
   Future<bool?> checkCatch() async {
@@ -130,28 +141,44 @@ class _MainRouterState extends State<MainRouter> {
               drawerOpen = false;
             }),
             drawer: Column(
-              children: drawerList
-                  .map((e) => InkWell(
-                        onTap: () {
-                          commonState.currentPage = e.page;
-                          setState(() {
-                            drawerOpen = false;
-                          });
-                        },
-                        child: Row(
-                          children: [
-                            Icon(e.icons),
-                            const SizedBox(
-                              width: 20,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Image.asset(
+                    "asset/img/weather_logo.png",
+                  ),
+                ),
+                Column(
+                  children: drawerList
+                      .map((e) => InkWell(
+                            onTap: () {
+                              commonState.currentPage = e.page;
+                              setState(() {
+                                drawerOpen = false;
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 7, horizontal: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(e.icons),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    e.title,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              e.title,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ))
-                  .toList(),
+                          ))
+                      .toList(),
+                ),
+              ],
             ),
             child: () {
               switch (commonState.currentPage) {
@@ -164,7 +191,7 @@ class _MainRouterState extends State<MainRouter> {
                     },
                   );
                 case CurrentPage.search:
-                  return SearchPage();
+                  return const SearchPage();
                 default:
                   return const MyHomePage();
               }

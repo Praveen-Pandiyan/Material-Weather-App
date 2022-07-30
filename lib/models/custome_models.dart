@@ -62,14 +62,14 @@ class Features {
   String? id;
   String? type;
   List<String>? placeType;
-  int? relevance;
+  num? relevance;
   Properties? properties;
   String? text;
   String? placeName;
   String? matchingText;
   String? matchingPlaceName;
-  List<double>? bbox;
-  List<double>? center;
+  List<num>? bbox;
+  List<num>? center;
   Geometry? geometry;
   List<Context>? context;
 
@@ -97,7 +97,7 @@ class Features {
     placeName = json['place_name'];
     matchingText = json['matching_text'];
     matchingPlaceName = json['matching_place_name'];
-    center = json['center']?.cast<double>();
+    center = json['center']?.cast<num>();
 
     if (json['context'] != null) {
       context = <Context>[];
@@ -150,13 +150,13 @@ class Properties {
 
 class Geometry {
   String? type;
-  List<double>? coordinates;
+  List<num>? coordinates;
 
   Geometry({this.type, this.coordinates});
 
   Geometry.fromJson(Map<String, dynamic> json) {
     type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+    coordinates = json['coordinates'].cast<num>();
   }
 
   Map<String, dynamic> toJson() {

@@ -24,7 +24,7 @@ class _SlidingDrawerState extends State<SlidingDrawer>
     super.initState();
     setState(() {
       _controller = AnimationController(
-          vsync: this, duration: const Duration(milliseconds: 200));
+          vsync: this, duration: const Duration(milliseconds: 400));
     });
     // _controller.forward();
   }
@@ -43,7 +43,7 @@ class _SlidingDrawerState extends State<SlidingDrawer>
       _controller.reverse();
     }
     return Material(
-      color: Colors.red,
+      color: Color.fromARGB(255, 129, 166, 225),
       child: Stack(children: [
         SizedBox(
           width: MediaQuery.of(context).size.width * .55,
@@ -66,18 +66,20 @@ class _SlidingDrawerState extends State<SlidingDrawer>
                       widget.onCloseDrawer();
                     }
                   },
-                  onHorizontalDragUpdate: (val) {
-                    // print("${val.globalPosition.dx} ${val.globalPosition.dy}");
-
-                    // if (val.localPosition.dx > 5.0)
-                    //   setState(() {
-                    //     widget.isOpen != widget.isOpen;
-                    //   });
-                  },
-                  child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(_controller.value * 15.0),
-                      child: child ?? Container()),
+                  onHorizontalDragUpdate: (val) {},
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(_controller.value * 15.0),
+                        border: Border.all(
+                          width: _controller.value * 5.0,
+                          color: Color.fromARGB(255, 30, 30, 30),
+                        ),
+                      ),
+                      child: ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(_controller.value * 8.0),
+                          child: child ?? Container())),
                 ),
               )),
         )),

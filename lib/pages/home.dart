@@ -155,7 +155,27 @@ class TonggleChart extends StatefulWidget {
   State<TonggleChart> createState() => _TonggleChartState();
 }
 
+enum Toggle { temp, clouds, pressure }
+
+class ToggleOptions {
+  String title;
+  Toggle option;
+  IconData icons;
+  ToggleOptions(
+      {required this.title, required this.option, required this.icons});
+}
+
 class _TonggleChartState extends State<TonggleChart> {
+  static List<ToggleOptions> options = [
+    ToggleOptions(
+        title: "Temperature",
+        option: Toggle.temp,
+        icons: Icons.thermostat_rounded),
+    ToggleOptions(title: "Clouds", option: Toggle.clouds, icons: Icons.cloud),
+    ToggleOptions(
+        title: "Pressure", option: Toggle.pressure, icons: Icons.speed_rounded),
+  ];
+  ToggleOptions selectOption = options.first;
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -163,16 +183,50 @@ class _TonggleChartState extends State<TonggleChart> {
         widget.title,
         style: Theme.of(context).textTheme.headline4,
       ),
-      TemperatureChart(
-        chartData: () {
-          if (widget.daily != null) {
-            return widget.daily!.map((e) => e.temp!.day).toList() as List<num?>;
-          } else if (widget.hourly != null) {
-            return widget.hourly!.map((e) => e.temp).toList() as List<num?>;
-          } else {
-            return [] as List<num>;
-          }
-        }(),
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.0),
+            color: Colors.white,
+            boxShadow: const [BoxShadow(blurRadius: 1.0)]),
+        child: Column(
+          children: [
+            Row(
+                children: options
+                    .map((e) => InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectOption = e;
+                            });
+                          },
+                          child: Row(
+                            children: [Icon(e.icons), Text(e.title)],
+                          ),
+                        ))
+                    .toList()),
+            TemperatureChart(
+              chartData: () {
+                if (widget.daily != null) {
+                  return widget.daily!.map((e) => e.temp!.day).toList()
+                      as List<num?>;
+                } else if (widget.hourly != null) {
+                  switch (selectOption.option) {
+                    case Toggle.temp:
+                      return widget.hourly!.map((e) => e.temp).toList();
+                    case Toggle.clouds:
+                      return widget.hourly!.map((e) => e.clouds).toList();
+                    case Toggle.pressure:
+                      return widget.hourly!.map((e) => e.pressure).toList();
+                    default:
+                      return widget.hourly!.map((e) => e.clouds).toList();
+                  }
+                } else {
+                  return [] as List<num>;
+                }
+              }(),
+            ),
+          ],
+        ),
       )
     ]);
   }
@@ -190,12 +244,7 @@ class TemperatureChart extends StatefulWidget {
 class _TemperatureChartState extends State<TemperatureChart> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            color: Colors.white,
-            boxShadow: const [BoxShadow(blurRadius: 1.0)]),
+    return SizedBox(
         width: MediaQuery.of(context).size.width,
         child: DefaultTextStyle(
           style: const TextStyle(color: Colors.black, fontSize: 6.0),
@@ -250,8 +299,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 1,
-                          reservedSize: 15,
+                          reservedSize: 20,
                         ),
                       ),
                       rightTitles: AxisTitles(
@@ -267,7 +315,6 @@ class _TemperatureChartState extends State<TemperatureChart> {
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 1,
                           reservedSize: 20,
                         ),
                       ),

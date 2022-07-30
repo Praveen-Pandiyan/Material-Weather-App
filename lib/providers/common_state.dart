@@ -11,7 +11,7 @@ String openWeatherMapey = "957252df48b4072773ff5ac52b256ab7";
 String mapBoxKey =
     "pk.eyJ1IjoicHJhdmVlbmFhbmFuZDIyIiwiYSI6ImNqdWJjM2M5YjBhemM0MnBjM2xmcnVnaG4ifQ.F2CMI34BYsWhUkhxwDrYiA";
 
-enum CurrentPage { home, search, settings }
+enum CurrentPage { home, search, settings, about }
 
 class CommonState extends ChangeNotifier {
   CurrentData _currentData = CurrentData();

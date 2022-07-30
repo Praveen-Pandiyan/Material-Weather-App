@@ -92,7 +92,10 @@ class _SearchPageState extends State<SearchPage> {
                                     lat: e.center![1],
                                     lon: e.center![0],
                                     name: e.text,
-                                    secondaryName: e.context![1].text,
+                                    secondaryName: e.placeName!
+                                        .split(',')
+                                        .skip(1)
+                                        .join(','),
                                   ).toJson()));
                               print(storage.getItem("lastSearch"));
                               setState(() {
@@ -100,7 +103,8 @@ class _SearchPageState extends State<SearchPage> {
                                   lat: e.center![1],
                                   lon: e.center![0],
                                   name: e.text,
-                                  secondaryName: e.context![1].text,
+                                  secondaryName:
+                                      e.placeName!.split(',').skip(1).join(','),
                                 );
                                 commonState.currentPage = CurrentPage.home;
                               });
@@ -109,7 +113,7 @@ class _SearchPageState extends State<SearchPage> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 30, top: 20),
-                          child: Text(e.text ?? ""),
+                          child: Text(" ${e.placeName}"),
                         )))
                     .toList(),
               );
