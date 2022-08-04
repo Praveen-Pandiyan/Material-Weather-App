@@ -57,10 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
 
-    return !isFirst
-        ? Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
-            body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: (!isFirst && commonState.currentData.current != null)
+          ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -107,36 +107,62 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const SecondaryData(),
-                  Text(
-                    "In Next 1 Hour",
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  if (commonState.currentData.minutely?.first != null)
-                    TemperatureChart(
-                      chartData: commonState.currentData.minutely
-                              ?.map((e) => e.precipitation ?? 0)
-                              .toList() ??
-                          [],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
                     ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (commonState.currentData.daily?.first != null)
-                    TonggleChart(
-                      title: "Next 48 hours",
-                      hourly: commonState.currentData.hourly,
+                    child: Column(
+                      children: [
+                        const SecondaryData(),
+                        // Text(
+                        //   "In Next 1 Hour",
+                        //   style: Theme.of(context).textTheme.headline4,
+                        // ),
+                        // if (commonState.currentData.minutely?.first != null)
+                        //   TemperatureChart(
+                        //     chartData: commonState.currentData.minutely
+                        //             ?.map((e) => e.precipitation ?? 0)
+                        //             .toList() ??
+                        //         [],
+                        //   ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        if (commonState.currentData.daily?.first != null)
+                          TonggleChart(
+                            title: "Next 48 hours",
+                            hourly: commonState.currentData.hourly,
+                          ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        if (commonState.currentData.daily?.first != null)
+                          TonggleChart(
+                            title: "Next 4 days",
+                            daily: commonState.currentData.daily,
+                          ),
+                      ],
                     ),
-                  if (commonState.currentData.daily?.first != null)
-                    TonggleChart(
-                      title: "Next 4 days",
-                      daily: commonState.currentData.daily,
-                    ),
+                  )
                 ],
               ),
-            ),
-          )
-        : const CircularProgressIndicator();
+            )
+          : Container(
+              alignment: Alignment.center,
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(
+                    color: Colors.blue,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text("Loading...")
+                ],
+              )),
+    );
   }
 }
 
@@ -161,8 +187,12 @@ class ToggleOptions {
   String title;
   Toggle option;
   IconData icons;
+  List<Color> listColor;
   ToggleOptions(
-      {required this.title, required this.option, required this.icons});
+      {required this.title,
+      required this.option,
+      required this.icons,
+      this.listColor = const [Colors.orange, Colors.red]});
 }
 
 class _TonggleChartState extends State<TonggleChart> {
@@ -170,10 +200,18 @@ class _TonggleChartState extends State<TonggleChart> {
     ToggleOptions(
         title: "Temperature",
         option: Toggle.temp,
-        icons: Icons.thermostat_rounded),
-    ToggleOptions(title: "Clouds", option: Toggle.clouds, icons: Icons.cloud),
+        icons: Icons.thermostat_rounded,
+        listColor: [Colors.red, Colors.orange]),
     ToggleOptions(
-        title: "Pressure", option: Toggle.pressure, icons: Icons.speed_rounded),
+        title: "Clouds",
+        option: Toggle.clouds,
+        icons: Icons.cloud,
+        listColor: [Colors.purple, Colors.blue]),
+    ToggleOptions(
+        title: "Pressure",
+        option: Toggle.pressure,
+        icons: Icons.speed_rounded,
+        listColor: [Colors.green, Color.fromARGB(255, 182, 166, 23)]),
   ];
   ToggleOptions selectOption = options.first;
   @override
@@ -199,29 +237,80 @@ class _TonggleChartState extends State<TonggleChart> {
                               selectOption = e;
                             });
                           },
-                          child: Row(
-                            children: [Icon(e.icons), Text(e.title)],
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 7.0, vertical: 2.5),
+                            margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: e.listColor),
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  e.icons,
+                                  size: 13.0,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(
+                                  width: 7.0,
+                                ),
+                                Text(
+                                  e.title,
+                                  style: const TextStyle(
+                                    fontSize: 13.0,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ))
                     .toList()),
             TemperatureChart(
               chartData: () {
                 if (widget.daily != null) {
-                  return widget.daily!.map((e) => e.temp!.day).toList()
-                      as List<num?>;
+                  switch (selectOption.option) {
+                    case Toggle.temp:
+                      return ChartData(
+                          data: widget.daily!.map((e) => e.temp!.day).toList(),
+                          colorList: selectOption.listColor);
+                    case Toggle.clouds:
+                      return ChartData(
+                          data: widget.daily!.map((e) => e.clouds).toList(),
+                          colorList: selectOption.listColor);
+                    case Toggle.pressure:
+                      return ChartData(
+                          data: widget.daily!.map((e) => e.pressure).toList(),
+                          colorList: selectOption.listColor);
+                    default:
+                      return ChartData(
+                          data: widget.daily!.map((e) => e.temp!.day).toList(),
+                          colorList: []);
+                  }
                 } else if (widget.hourly != null) {
                   switch (selectOption.option) {
                     case Toggle.temp:
-                      return widget.hourly!.map((e) => e.temp).toList();
+                      return ChartData(
+                          data: widget.hourly!.map((e) => e.temp).toList(),
+                          colorList: selectOption.listColor);
                     case Toggle.clouds:
-                      return widget.hourly!.map((e) => e.clouds).toList();
+                      return ChartData(
+                          data: widget.hourly!.map((e) => e.clouds).toList(),
+                          colorList: selectOption.listColor);
                     case Toggle.pressure:
-                      return widget.hourly!.map((e) => e.pressure).toList();
+                      return ChartData(
+                          data: widget.hourly!.map((e) => e.pressure).toList(),
+                          colorList: selectOption.listColor);
                     default:
-                      return widget.hourly!.map((e) => e.clouds).toList();
+                      return ChartData(
+                          data: widget.hourly!.map((e) => e.temp).toList(),
+                          colorList: []);
                   }
                 } else {
-                  return [] as List<num>;
+                  return ChartData(
+                    data: widget.hourly!.map((e) => e.temp).toList(),
+                  );
+                  ;
                 }
               }(),
             ),
@@ -232,8 +321,17 @@ class _TonggleChartState extends State<TonggleChart> {
   }
 }
 
+//model class
+
+class ChartData {
+  final List<num?> data;
+  final List<Color> colorList;
+  ChartData(
+      {required this.data, this.colorList = const [Colors.orange, Colors.red]});
+}
+
 class TemperatureChart extends StatefulWidget {
-  final List<num?> chartData;
+  final ChartData chartData;
 
   const TemperatureChart({Key? key, required this.chartData}) : super(key: key);
 
@@ -244,89 +342,78 @@ class TemperatureChart extends StatefulWidget {
 class _TemperatureChartState extends State<TemperatureChart> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+        margin: const EdgeInsets.only(top: 30.0),
         width: MediaQuery.of(context).size.width,
         child: DefaultTextStyle(
           style: const TextStyle(color: Colors.black, fontSize: 6.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Temperature Trend",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0),
-              ),
-              SizedBox(
-                height: 200,
-                child: LineChart(
-                  LineChartData(
-                    lineTouchData: LineTouchData(
-                      enabled: false,
-                    ),
-                    gridData: FlGridData(show: false),
-                    borderData: FlBorderData(
-                      show: false,
-                      border: const Border(
-                        bottom: BorderSide(color: Color(0xff4e4965), width: 1),
-                        left: BorderSide(color: Color(0xff4e4965), width: 1),
-                        right: BorderSide(color: Colors.transparent),
-                        top: BorderSide(color: Colors.transparent),
-                      ),
-                    ),
-                    baselineX: 30,
-                    lineBarsData: [
-                      LineChartBarData(
-                        isCurved: true,
-                        curveSmoothness: 0.5,
-                        gradient: const LinearGradient(
-                            colors: [Colors.red, Colors.orange],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter),
-                        barWidth: 2,
-                        isStrokeCapRound: true,
-                        dotData: FlDotData(show: false),
-                        belowBarData: BarAreaData(show: false),
-                        spots: [
-                          ...widget.chartData.asMap().entries.map((e) =>
-                              FlSpot(e.key.toDouble(), e.value!.toDouble()))
-                        ],
-                      ),
+          child: SizedBox(
+            height: 200,
+            child: LineChart(
+              LineChartData(
+                lineTouchData: LineTouchData(
+                  enabled: true,
+                ),
+                gridData: FlGridData(show: false),
+                borderData: FlBorderData(
+                  show: false,
+                  border: const Border(
+                    bottom: BorderSide(color: Color(0xff4e4965), width: 1),
+                    left: BorderSide(color: Color(0xff4e4965), width: 1),
+                    right: BorderSide(color: Colors.transparent),
+                    top: BorderSide(color: Colors.transparent),
+                  ),
+                ),
+                baselineX: 30,
+                lineBarsData: [
+                  LineChartBarData(
+                    isCurved: true,
+                    curveSmoothness: 0.5,
+                    gradient: LinearGradient(
+                        colors: widget.chartData.colorList,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
+                    barWidth: 2,
+                    isStrokeCapRound: true,
+                    dotData: FlDotData(show: false),
+                    belowBarData: BarAreaData(show: false),
+                    spots: [
+                      ...widget.chartData.data.asMap().entries.map(
+                          (e) => FlSpot(e.key.toDouble(), e.value!.toDouble()))
                     ],
-                    titlesData: FlTitlesData(
-                      show: true,
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 20,
-                        ),
-                      ),
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                      ),
-                      topTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 20,
-                        ),
-                      ),
+                  ),
+                ],
+                titlesData: FlTitlesData(
+                  show: true,
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 20,
                     ),
                   ),
-
-                  swapAnimationDuration:
-                      const Duration(milliseconds: 150), // Optional
-                  swapAnimationCurve: Curves.linear, // Optional
+                  rightTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: false,
+                    ),
+                  ),
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: false,
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 20,
+                    ),
+                  ),
                 ),
               ),
-            ],
+
+              swapAnimationDuration:
+                  const Duration(milliseconds: 150), // Optional
+              swapAnimationCurve: Curves.linear, // Optional
+            ),
           ),
         ));
   }

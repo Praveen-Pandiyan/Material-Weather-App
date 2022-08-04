@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.lightBlue[800],
             accentColor: Colors.cyan[600],
             // font
-            fontFamily: 'Georgia',
+            fontFamily: 'display-sans',
             //text style
             textTheme: const TextTheme(
               headline1: TextStyle(
@@ -141,6 +141,8 @@ class _MainRouterState extends State<MainRouter> {
               drawerOpen = false;
             }),
             drawer: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),

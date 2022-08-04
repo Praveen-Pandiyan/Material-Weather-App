@@ -27,3 +27,7 @@ flutter:
   assets:
     - asset/img/sunset.jpg
     - asset/img/
+  fonts:
+    - family: display-sans
+      fonts:
+        - asset: asset/fonts/display_sans.ttf

@@ -48,7 +48,7 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
             style: Theme.of(context).textTheme.headline1,
           ),
           Text(
-            '${_commonState.currentData.current?.weather![0].description}',
+            '${_commonState.currentData.current?.weather![0].description?.toUpperCase()}',
             style: Theme.of(context).textTheme.bodyLarge,
           ),
           Text(

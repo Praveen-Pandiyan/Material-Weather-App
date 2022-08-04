@@ -33,95 +33,103 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 20.0,
-          ),
-          Row(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      commonState.currentPage = CurrentPage.home;
-                    });
-                  },
-                  icon: const Icon(Icons.arrow_back)),
-              Expanded(
-                  child: TextField(
-                controller: _controller,
-                decoration: const InputDecoration.collapsed(hintText: "Search"),
-                onChanged: (String val) {
-                  setState(() {
-                    searchResluts = null;
-                  });
-                  if (treshold != null) treshold!.cancel();
-                  treshold = Timer(
-                      const Duration(milliseconds: 500), () => _doSearch(val));
-                },
-                autocorrect: true,
-                onEditingComplete: () {
-                  _doSearch(_controller.text);
-                },
-              )),
-              IconButton(
-                  onPressed: () {
-                    _doSearch(_controller.text);
-                  },
-                  icon: const Icon(Icons.search)),
+              SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          commonState.currentPage = CurrentPage.home;
+                        });
+                      },
+                      icon: const Icon(Icons.arrow_back)),
+                  Expanded(
+                      child: TextField(
+                    controller: _controller,
+                    decoration:
+                        const InputDecoration.collapsed(hintText: "Search"),
+                    onChanged: (String val) {
+                      setState(() {
+                        searchResluts = null;
+                      });
+                      if (treshold != null) treshold!.cancel();
+                      treshold = Timer(const Duration(milliseconds: 500),
+                          () => _doSearch(val));
+                    },
+                    autocorrect: true,
+                    onEditingComplete: () {
+                      _doSearch(_controller.text);
+                    },
+                  )),
+                  IconButton(
+                      onPressed: () {
+                        _doSearch(_controller.text);
+                      },
+                      icon: const Icon(Icons.search)),
+                ],
+              ),
+              () {
+                if (_controller.text.isEmpty) {
+                  return const Text("Please Type to Search");
+                }
+
+                if (searchResluts != null &&
+                    searchResluts!.query != null &&
+                    searchResluts!.features!.isNotEmpty) {
+                  return Column(
+                    children: searchResluts!.features!
+                        .map((e) => InkWell(
+                            onTap: () async {
+                              await storage.ready.then((value) {
+                                if (value) {
+                                  storage.setItem(
+                                      "lastSearch",
+                                      json.encode(Location(
+                                        lat: e.center![1],
+                                        lon: e.center![0],
+                                        name: e.text,
+                                        secondaryName: e.placeName!
+                                            .split(',')
+                                            .skip(1)
+                                            .join(','),
+                                      ).toJson()));
+                                  print(storage.getItem("lastSearch"));
+                                  setState(() {
+                                    commonState.selectedLoc = Location(
+                                      lat: e.center![1],
+                                      lon: e.center![0],
+                                      name: e.text,
+                                      secondaryName: e.placeName!
+                                          .split(',')
+                                          .skip(1)
+                                          .join(','),
+                                    );
+                                    commonState.currentPage = CurrentPage.home;
+                                  });
+                                }
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 30, top: 20),
+                              child: Text(" ${e.placeName}"),
+                            )))
+                        .toList(),
+                  );
+                } else {
+                  return const Text("No resluts found");
+                }
+              }()
             ],
           ),
-          () {
-            if (_controller.text.isEmpty) {
-              return const Text("Please Type to Search");
-            }
-
-            if (searchResluts != null &&
-                searchResluts!.query != null &&
-                searchResluts!.features!.isNotEmpty) {
-              return Column(
-                children: searchResluts!.features!
-                    .map((e) => InkWell(
-                        onTap: () async {
-                          await storage.ready.then((value) {
-                            if (value) {
-                              storage.setItem(
-                                  "lastSearch",
-                                  json.encode(Location(
-                                    lat: e.center![1],
-                                    lon: e.center![0],
-                                    name: e.text,
-                                    secondaryName: e.placeName!
-                                        .split(',')
-                                        .skip(1)
-                                        .join(','),
-                                  ).toJson()));
-                              print(storage.getItem("lastSearch"));
-                              setState(() {
-                                commonState.selectedLoc = Location(
-                                  lat: e.center![1],
-                                  lon: e.center![0],
-                                  name: e.text,
-                                  secondaryName:
-                                      e.placeName!.split(',').skip(1).join(','),
-                                );
-                                commonState.currentPage = CurrentPage.home;
-                              });
-                            }
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30, top: 20),
-                          child: Text(" ${e.placeName}"),
-                        )))
-                    .toList(),
-              );
-            } else {
-              return const Text("No resluts found");
-            }
-          }()
-        ],
+        ),
       ),
     );
   }
