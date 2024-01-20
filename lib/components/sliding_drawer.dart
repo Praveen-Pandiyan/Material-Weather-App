@@ -6,12 +6,11 @@ class SlidingDrawer extends StatefulWidget {
   final Widget? drawer;
   final Function onCloseDrawer;
   const SlidingDrawer(
-      {Key? key,
+      {super.key,
       required this.child,
       required this.isOpen,
       this.drawer,
-      required this.onCloseDrawer})
-      : super(key: key);
+      required this.onCloseDrawer});
   @override
   State<SlidingDrawer> createState() => _SlidingDrawerState();
 }
@@ -43,7 +42,7 @@ class _SlidingDrawerState extends State<SlidingDrawer>
       _controller.reverse();
     }
     return Material(
-      color: Color.fromARGB(255, 129, 166, 225),
+      color: const Color.fromARGB(255, 129, 166, 225),
       child: Stack(children: [
         SizedBox(
           width: MediaQuery.of(context).size.width * .55,
@@ -73,7 +72,7 @@ class _SlidingDrawerState extends State<SlidingDrawer>
                             BorderRadius.circular(_controller.value * 15.0),
                         border: Border.all(
                           width: _controller.value * 5.0,
-                          color: Color.fromARGB(255, 30, 30, 30),
+                          color: const Color.fromARGB(255, 30, 30, 30),
                         ),
                       ),
                       child: ClipRRect(

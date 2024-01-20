@@ -9,7 +9,7 @@ import 'package:weather_app/providers/common_state.dart';
 import '../models/custome_models.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -18,14 +18,14 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late CommonState commonState;
   SearchResluts? searchResluts;
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   Timer? treshold;
   int doCallIn = 0;
   final LocalStorage storage = LocalStorage('search');
   @override
   Widget build(BuildContext context) {
     CommonState commonState = Provider.of<CommonState>(context);
-    _doSearch(String q) async {
+    doSearch(String q) async {
       var temp = await commonState.locationSearch(q);
       setState(() {
         searchResluts = temp;
@@ -39,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Row(
@@ -62,16 +62,16 @@ class _SearchPageState extends State<SearchPage> {
                       });
                       if (treshold != null) treshold!.cancel();
                       treshold = Timer(const Duration(milliseconds: 500),
-                          () => _doSearch(val));
+                          () => doSearch(val));
                     },
                     autocorrect: true,
                     onEditingComplete: () {
-                      _doSearch(_controller.text);
+                      doSearch(_controller.text);
                     },
                   )),
                   IconButton(
                       onPressed: () {
-                        _doSearch(_controller.text);
+                        doSearch(_controller.text);
                       },
                       icon: const Icon(Icons.search)),
                 ],
@@ -101,7 +101,6 @@ class _SearchPageState extends State<SearchPage> {
                                             .skip(1)
                                             .join(','),
                                       ).toJson()));
-                                  print(storage.getItem("lastSearch"));
                                   setState(() {
                                     commonState.selectedLoc = Location(
                                       lat: e.center![1],

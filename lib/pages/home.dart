@@ -14,7 +14,7 @@ import '../models/current_data.dart';
 
 class MyHomePage extends StatefulWidget {
   final Function(bool)? triggerDrawer;
-  const MyHomePage({Key? key, this.triggerDrawer}) : super(key: key);
+  const MyHomePage({super.key, this.triggerDrawer});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -38,7 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
         storage.ready.then((value) {
           if (value) {
             var temp = storage.getItem("lastSearch");
-            print(temp.toString() + "fff");
             if (temp == null) {
               commonState.selectedLoc = Location(
                   lat: 28.613895,
@@ -58,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: (!isFirst && commonState.currentData.current != null)
           ? SingleChildScrollView(
               child: Column(
@@ -150,9 +149,9 @@ class _MyHomePageState extends State<MyHomePage> {
           : Container(
               alignment: Alignment.center,
               color: Colors.white,
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   CircularProgressIndicator(
                     color: Colors.blue,
                   ),
@@ -171,11 +170,11 @@ class TonggleChart extends StatefulWidget {
   final List<Hourly>? hourly;
   final List<Daily>? daily;
   const TonggleChart({
-    Key? key,
+    super.key,
     this.hourly,
     this.daily,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   State<TonggleChart> createState() => _TonggleChartState();
@@ -211,7 +210,7 @@ class _TonggleChartState extends State<TonggleChart> {
         title: "Pressure",
         option: Toggle.pressure,
         icons: Icons.speed_rounded,
-        listColor: [Colors.green, Color.fromARGB(255, 182, 166, 23)]),
+        listColor: [Colors.green, const Color.fromARGB(255, 182, 166, 23)]),
   ];
   ToggleOptions selectOption = options.first;
   @override
@@ -219,7 +218,7 @@ class _TonggleChartState extends State<TonggleChart> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         widget.title,
-        style: Theme.of(context).textTheme.headline4,
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
       Container(
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -310,7 +309,7 @@ class _TonggleChartState extends State<TonggleChart> {
                   return ChartData(
                     data: widget.hourly!.map((e) => e.temp).toList(),
                   );
-                  ;
+                  
                 }
               }(),
             ),
@@ -333,7 +332,7 @@ class ChartData {
 class TemperatureChart extends StatefulWidget {
   final ChartData chartData;
 
-  const TemperatureChart({Key? key, required this.chartData}) : super(key: key);
+  const TemperatureChart({super.key, required this.chartData});
 
   @override
   State<TemperatureChart> createState() => _TemperatureChartState();
@@ -351,10 +350,10 @@ class _TemperatureChartState extends State<TemperatureChart> {
             height: 200,
             child: LineChart(
               LineChartData(
-                lineTouchData: LineTouchData(
+                lineTouchData: const LineTouchData(
                   enabled: true,
                 ),
-                gridData: FlGridData(show: false),
+                gridData: const FlGridData(show: false),
                 borderData: FlBorderData(
                   show: false,
                   border: const Border(
@@ -375,7 +374,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                         end: Alignment.bottomCenter),
                     barWidth: 2,
                     isStrokeCapRound: true,
-                    dotData: FlDotData(show: false),
+                    dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(show: false),
                     spots: [
                       ...widget.chartData.data.asMap().entries.map(
@@ -383,7 +382,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
                     ],
                   ),
                 ],
-                titlesData: FlTitlesData(
+                titlesData: const  FlTitlesData(
                   show: true,
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
@@ -410,9 +409,9 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 ),
               ),
 
-              swapAnimationDuration:
+              duration:
                   const Duration(milliseconds: 150), // Optional
-              swapAnimationCurve: Curves.linear, // Optional
+              curve: Curves.linear, // Optional
             ),
           ),
         ));

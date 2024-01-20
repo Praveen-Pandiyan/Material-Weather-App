@@ -38,15 +38,14 @@ class Stopper extends StatefulWidget {
   final double dragThreshold;
 
   /// The constructor.
-  Stopper(
-      {Key? key,
+  const Stopper(
+      {super.key,
       required this.builder,
       required this.stops,
       this.initialStop = 0,
       this.onClose,
       this.dragThreshold = 25})
-      : assert(initialStop < stops.length),
-        super(key: key);
+      : assert(initialStop < stops.length);
 
   @override
   StopperState createState() => StopperState();
@@ -143,7 +142,7 @@ class StopperState extends State<Stopper> with SingleTickerProviderStateMixin {
     }
   }
 
-  void _animate(double from, double to, [double? velocity]) {
+  void _animate(double from, double to) {
     _tween.begin = from;
     _tween.end = to;
     _animationController.value = 0;

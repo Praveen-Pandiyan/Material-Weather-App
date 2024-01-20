@@ -53,7 +53,6 @@ class CommonState extends ChangeNotifier {
       return "s";
       // print(json.decode(response.body));
     } else {
-      print(response.body);
       return "f";
     }
   }
@@ -61,7 +60,6 @@ class CommonState extends ChangeNotifier {
   Future<SearchResluts> locationSearch(String query) async {
     final response = await http.get(Uri.parse(
         "https://api.mapbox.com/geocoding/v5/mapbox.places/$query.json?proximity=ip&types=place%2Cpostcode%2Caddress&access_token=$mapBoxKey"));
-    print(response.body);
     if (response.statusCode == 200) {
       return SearchResluts.fromJson(json.decode(response.body));
     } else {

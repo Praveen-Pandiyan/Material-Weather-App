@@ -54,7 +54,7 @@ class CurrentData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['lat'] = lat;
     data['lon'] = lon;
     data['timezone'] = timezone;
@@ -136,7 +136,7 @@ class Current {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['dt'] = dt;
     data['sunrise'] = sunrise;
     data['sunset'] = sunset;
@@ -176,7 +176,7 @@ class Weather {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['main'] = main;
     data['description'] = description;
@@ -195,7 +195,7 @@ class Rain {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['1h'] = d1h;
     return data;
   }
@@ -213,7 +213,7 @@ class Minutely {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['dt'] = dt;
     data['precipitation'] = precipitation;
     return data;
@@ -275,7 +275,7 @@ class Hourly {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['dt'] = dt;
     data['temp'] = temp;
     data['feels_like'] = feelsLike;
@@ -365,7 +365,7 @@ class Daily {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['dt'] = dt;
     data['sunrise'] = sunrise;
     data['sunset'] = sunset;
@@ -414,7 +414,7 @@ class Temp {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['day'] = day;
     data['min'] = min;
     data['max'] = max;
@@ -441,7 +441,7 @@ class FeelsLike {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['day'] = day;
     data['night'] = night;
     data['eve'] = eve;
@@ -476,7 +476,7 @@ class Alerts {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['sender_name'] = senderName;
     data['event'] = event;
     data['start'] = start;

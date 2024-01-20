@@ -4,17 +4,16 @@ import 'package:provider/provider.dart';
 import '../providers/common_state.dart';
 
 class SecondaryData extends StatefulWidget {
-  const SecondaryData({Key? key}) : super(key: key);
+  const SecondaryData({super.key});
 
   @override
   State<SecondaryData> createState() => _SecondaryDataState();
 }
 
 class _SecondaryDataState extends State<SecondaryData> {
-  CommonState? _commonState;
   @override
   Widget build(BuildContext context) {
-    CommonState _commonState = Provider.of<CommonState>(context);
+    CommonState commonState = Provider.of<CommonState>(context);
     return Container(
       padding: const EdgeInsets.all(8.0),
       width: MediaQuery.of(context).size.width,
@@ -27,7 +26,7 @@ class _SecondaryDataState extends State<SecondaryData> {
         children: [
           Text(
             "Details",
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           Table(
             children: [
@@ -36,13 +35,13 @@ class _SecondaryDataState extends State<SecondaryData> {
                   title: "humidity",
                   icons: Icons.water_drop_outlined,
                   iconColor: Colors.blueAccent,
-                  value: _commonState.currentData.current!.humidity.toString(),
+                  value: commonState.currentData.current!.humidity.toString(),
                 ),
                 _WeatherData(
                   title: "Pressure",
                   icons: Icons.speed,
                   iconColor: Colors.redAccent,
-                  value: _commonState.currentData.current!.pressure.toString(),
+                  value: commonState.currentData.current!.pressure.toString(),
                 ),
               ]),
               TableRow(children: [
@@ -50,13 +49,13 @@ class _SecondaryDataState extends State<SecondaryData> {
                   title: "Wind",
                   icons: Icons.wind_power,
                   iconColor: Colors.lightGreen,
-                  value: _commonState.currentData.current!.windSpeed.toString(),
+                  value: commonState.currentData.current!.windSpeed.toString(),
                 ),
                 _WeatherData(
                   title: "UV index",
                   icons: Icons.sunny,
                   iconColor: Colors.orange,
-                  value: _commonState.currentData.current!.uvi.toString(),
+                  value: commonState.currentData.current!.uvi.toString(),
                 ),
               ])
             ],

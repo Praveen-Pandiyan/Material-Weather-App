@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
-import 'package:weather_app/models/current_data.dart';
 
 import 'components/sliding_drawer.dart';
 import 'models/custome_models.dart';
@@ -22,7 +19,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -38,29 +35,26 @@ class MyApp extends StatelessWidget {
             // UI
             brightness: Brightness.light,
             primaryColor: Colors.lightBlue[800],
-            accentColor: Colors.cyan[600],
+         
             // font
             fontFamily: 'display-sans',
             //text style
-            textTheme: const TextTheme(
-              headline1: TextStyle(
+            textTheme:  const TextTheme(
+              displayLarge:TextStyle(
                   fontSize: 72.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
-              headline2: TextStyle(
+              displayMedium: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w900,
                   color: Colors.black),
-              headline4: TextStyle(
+              headlineMedium:TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
-              headline6: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
-            ),
-            backgroundColor: Colors.white),
-        darkTheme: ThemeData.dark().copyWith(
-          backgroundColor: Colors.black,
-        ),
+              titleLarge: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
+            ), ),
+        darkTheme: ThemeData.dark()..colorScheme.copyWith(background: Colors.black),
         themeMode: ThemeMode.light,
         home: const MainRouter(),
       ),
@@ -76,7 +70,7 @@ class DrawerItem {
 }
 
 class MainRouter extends StatefulWidget {
-  const MainRouter({Key? key}) : super(key: key);
+  const MainRouter({super.key});
 
   @override
   State<MainRouter> createState() => _MainRouterState();
@@ -101,7 +95,6 @@ class _MainRouterState extends State<MainRouter> {
     return storage.ready.then((value) {
       if (value) {
         var temp = storage.getItem("lastSearch");
-        print(temp.toString() + "fff");
         if (temp == null) {
           commonState.selectedLoc = Location(
               lat: 29.949932,
@@ -113,14 +106,14 @@ class _MainRouterState extends State<MainRouter> {
         }
 
         return true;
-      } else
+      } else {
         return false;
+      }
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     myFuture = checkCatch();
   }
@@ -132,7 +125,7 @@ class _MainRouterState extends State<MainRouter> {
     return FutureBuilder(
         future: myFuture,
         builder: (context, snapshot) {
-          if (snapshot == null || snapshot.data == false) {
+          if ( snapshot.data == false) {
             return const Center(child: CircularProgressIndicator());
           }
           return SlidingDrawer(

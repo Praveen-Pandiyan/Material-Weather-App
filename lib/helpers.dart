@@ -9,6 +9,7 @@ extension ToTemp on num {
     } else if (to == Temp.f) {
       return ((this * 9 / 5) + 32).round();
     } else {
+      // ignore: unnecessary_this
       return this.round();
     }
   }

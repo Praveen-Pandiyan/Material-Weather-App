@@ -9,7 +9,7 @@ import '../providers/common_state.dart';
 import '../helpers.dart';
 
 class ResizeableContainer extends StatefulWidget {
-  const ResizeableContainer({Key? key}) : super(key: key);
+  const ResizeableContainer({super.key});
 
   @override
   State<ResizeableContainer> createState() => _ResizeableContainerState();
@@ -45,7 +45,7 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
         children: [
           Text(
             '${_commonState.currentData.current?.temp?.toTemp(Temp.n)}°',
-            style: Theme.of(context).textTheme.headline1,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           Text(
             '${_commonState.currentData.current?.weather![0].description?.toUpperCase()}',
