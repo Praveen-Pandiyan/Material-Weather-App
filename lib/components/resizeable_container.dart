@@ -45,7 +45,7 @@ class _ResizeableContainerState extends State<ResizeableContainer> {
         children: [
           Text(
             '${_commonState.currentData.current?.temp?.toTemp(Temp.n)}°',
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
           Text(
             '${_commonState.currentData.current?.weather![0].description?.toUpperCase()}',

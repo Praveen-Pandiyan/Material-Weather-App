@@ -85,6 +85,7 @@ class _SearchPageState extends State<SearchPage> {
                     searchResluts!.query != null &&
                     searchResluts!.features!.isNotEmpty) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: searchResluts!.features!
                         .map((e) => InkWell(
                             onTap: () async {

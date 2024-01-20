@@ -52,6 +52,10 @@ class MyApp extends StatelessWidget {
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
+              headlineLarge:TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
               titleLarge: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic),
             ), ),
         darkTheme: ThemeData.dark()..colorScheme.copyWith(background: Colors.black),
